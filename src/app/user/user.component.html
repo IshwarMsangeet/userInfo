@@ -1,0 +1,60 @@
+<mat-tab-group>
+  <mat-tab *ngIf="userList && userList.length>0" label="User List" class="tab-class-center">
+    <mat-nav-list class="search-result">
+      <table  class="table-full-width mat-elevation-z2" cellspacing="10">
+        <tr>
+          <th mat-sort-header="Name">Name</th>
+          <th mat-sort-header="phNumber">Ph Number</th>
+          <th mat-sort-header="Addr">Address</th>
+          <th mat-sort-header="Action">Action</th>
+      </tr>
+      <tr *ngFor="let user of userList; index as i;">
+        <td><h3 matLine> {{user.userName}} </h3></td>
+        <td><p matLine> {{user.phoneNumber}} </p></td>
+        <td><p matLine> {{user.address}} </p></td>
+        <td><button mat-icon-button (click)="deleteUser(i, user.id)">
+           <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+      </tr>
+    </table>
+    </mat-nav-list>
+
+  </mat-tab>
+  <mat-tab label="Add User">
+    <form (ngSubmit)="addUser(userForm)" class="form-container">
+      <mat-error *ngIf="fillAllField">All the fields are mendatory</mat-error>
+      <mat-form-field [formGroup]="userForm" appearance="outline">
+          <mat-label>User's name</mat-label>
+          <input type="text" matInput placeholder="Enter user's name" formControlName="userName" required>
+      </mat-form-field>
+      <mat-form-field [formGroup]="userForm" appearance="outline">
+          <mat-label>Phone Number</mat-label>
+          <input type="tel" matInput placeholder="Enter Phone Number" formControlName ="phoneNumber" required>
+      </mat-form-field>
+      <mat-form-field [formGroup]="userForm" appearance="outline">
+          <mat-label>Address</mat-label>
+          <textarea matAutosizeMinRows=5 matInput placeholder="Ex:- #49, CQAL layoout, Bengaluru-560024" formControlName="address" required></textarea>
+      </mat-form-field>
+      <button  mat-stroked-button mat-button type="submit">Save</button>
+    </form>
+  </mat-tab>
+  <mat-tab label="Search User" >
+    <!-- <div class="tab-class-center"> -->
+      <mat-form-field appearance="outline"  class="search-bar">
+          <input type="search" [(ngModel)]="searchStr" matInput placeholder="search by Number, name, address" (ngModelChange) = "searchUser($event)" >
+           <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <mat-nav-list class="search-result-size">
+      <mat-error *ngIf="isResEmpty"> No result found</mat-error>
+      <table cellspacing="10" style="text-align:center;">
+        <tr *ngFor="let user of searchedUserList; index as i;">
+          <td><h3 matLine> {{user.userName}} </h3></td>
+          <td><p matLine> {{user.phoneNumber}} </p></td>
+          <td><p matLine> {{user.address}} </p></td>
+        </tr>
+      </table>
+    </mat-nav-list>
+    <!-- </div> -->
+   </mat-tab>
+</mat-tab-group>
